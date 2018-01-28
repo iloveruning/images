@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>图片列表</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <!--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+-->
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+          integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
+            integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/css/sweetalert.css"/>
+
+</head>
+<body>
+
+<div class="table-responsive">
+    <!-- Default panel contents -->
+    <!-- <div class="panel-heading">Panel heading</div>-->
+
+    <!-- Table -->
+    <table class="table table-striped" style="text-align: center; width: 80%; margin: auto">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th>图片名</th>
+            <th>描述</th>
+            <th>类型</th>
+            <th>上传时间</th>
+            <th>预览</th>
+            <th>删除</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="image,imageStat: ${list}" th:id="${image.id}">
+            <td th:text="${image.id}">1</td>
+            <td th:text="${image.name}">水滴.jpg</td>
+            <td th:text="${image.description}">水滴sssssssssssssssssssssss</td>
+            <td th:text="${image.type}">jpg</td>
+
+            <td th:text="${#dates.format(image.createTime,'yyyy-MM-dd HH:mm:ss')}">2018-1-8 16:20:09</td>
+            <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                        th:value="${image.key_}" onclick="preview(value)">
+                    预览
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger" onclick="del(value)" th:value="${image.id}">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation" style="margin-left: 45%; margin-top: 20px;">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" th:href="@{'/list/'+${pre}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="/list/1">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">..</a></li>
+            <li class="page-item"><a class="page-link" th:text="${page}">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">..</a></li>
+            <li class="page-item"><a class="page-link" th:href="@{'/list/'+${total}}" th:text="${total}">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next" th:href="@{'/list/'+${next}}">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">图片预览</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="img" style="width: 450px;margin-left: 10px" class="img-fluid" alt="Responsive image">
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+<script type="text/javascript" src="/js/layer/layer.js"></script>
+<script type="text/javascript" src="/js/sweetalert.min.js"></script>
+<script>
+    function preview(key) {
+        //console.log(key)
+        var url = 'http://image.chenliangliang.xin/' + key;
+        $('#img').attr("src", url);
+    }
+
+    function del(id) {
+
+        swal({
+            title: "您确定要删除吗？",
+            text: "您确定要删除这张图片？",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            confirmButtonText: "确定",
+            confirmButtonColor: "#ec6c62"
+        }, function() {
+            $.ajax({
+                url: '/image/' + id,
+                type: 'DELETE',
+                success: function (data) {
+                    console.log(data);
+                    if (data.status) {
+                        swal("操作成功!", "已成功删除！", "success");
+                        $('#' + id).remove();
+
+                    } else {
+                        swal(data.msg);
+                    }
+                },
+                error: function (err) {
+
+                }
+            });
+        });
+
+    }
+</script>
+</html>

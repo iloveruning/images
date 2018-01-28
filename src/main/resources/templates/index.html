@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<!-- release v4.3.6, copyright 2014 - 2016 Kartik Visweswaran -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>图片上传 陈亮亮</title>
+    <link href="http://www.jq22.com/jquery/bootstrap-3.3.4.css" rel="stylesheet">
+    <link href="/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<div class="container kv-main">
+    <div class="page-header">
+        <h1>图片上传
+            <small>陈亮亮</small>
+        </h1>
+    </div>
+
+    <div class="page-header">
+        <h2><small>上传网络网络图片</small></h2>
+    </div>
+    <form class="form-inline" style="margin-left: 40%" action="/image/url" method="post">
+
+        <div class="form-group">
+            <input type="text" name="url" style="width: 250px" class="form-control" placeholder="复制图片超链接到这里">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">上传</button>
+    </form>
+    <hr>
+    <div class="page-header">
+       <h2><small>上传本地图片</small></h2>
+    </div>
+    <!-- <div class="page-header">
+     <h1>Bootstrap File Input Example</h1>
+     </div>
+     <form enctype="multipart/form-data">
+         <input id="file-0a" class="file" type="file" multiple data-min-file-count="1">
+         <br>
+         <button type="submit" class="btn btn-primary">Submit</button>
+         <button type="reset" class="btn btn-default">Reset</button>
+     </form>
+     <hr>
+     <form enctype="multipart/form-data">
+         <label>Test invalid input type</label>
+         <input id="file-0b" class="file" type="text" multiple data-min-file-count="1">
+         <script>
+         $(document).on('ready', function(){$("#file-0b").fileinput();});
+         </script>
+     </form>-->
+    <!--<hr>
+    <form enctype="multipart/form-data">
+        <input id="file-0a" class="file" type="file" multiple data-min-file-count="3">
+        <hr>
+         <div class="form-group">
+            <input id="file-0b" class="file" type="file">
+        </div>
+        <hr>
+        <div class="form-group">
+            <input id="file-1" type="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="2">
+        </div>
+        <hr>
+        <div class="form-group">
+            <input id="file-2" type="file" class="file" readonly data-show-upload="false">
+        </div>
+        <hr>
+        <div class="form-group">
+            <label>Preview File Icon</label>
+            <input id="file-3" type="file" multiple=true>
+        </div>
+        <hr>
+        <div class="form-group">
+            <input id="file-4" type="file" class="file" data-upload-url="#">
+        </div>
+        <hr>
+        <div class="form-group">
+            <button class="btn btn-warning" type="button">Disable Test</button>
+            <button class="btn btn-info" type="reset">Refresh Test</button>
+            <button class="btn btn-primary">Submit</button>
+            <button class="btn btn-default" type="reset">Reset</button>
+        </div>
+        <hr>
+        <div class="form-group">
+            <input type="file" class="file" id="test-upload" multiple>
+            <div id="errorBlock" class="help-block"></div>
+        </div>
+        <hr>
+        <div class="form-group">
+            <input id="file-5" class="file" type="file" multiple data-preview-file-type="any" data-upload-url="#">
+        </div>
+    </form>-->
+
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon" id="sizing-addon1">描述</span>
+        <input type="text" id="desc" name="desc" class="form-control" placeholder="添加对上传图片的说明"
+               aria-describedby="sizing-addon1">
+    </div>
+    <hr>
+
+    <form enctype="multipart/form-data">
+        <input id="file-zh" name="file" type="file" multiple>
+        <!-- <hr style="border: 2px dotted">
+         <label>Spanish Input</label>
+         <input id="file-es" name="file-es[]" type="file" multiple>-->
+    </form>
+    <hr>
+    <br>
+</div>
+
+
+</body>
+
+<script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="/js/fileinput.js" type="text/javascript"></script>
+<script src="/js/locales/zh.js" type="text/javascript"></script>
+<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js" type="text/javascript"></script>
+
+<script>
+
+
+    $('#file-zh').fileinput({
+        language: 'zh',
+        uploadUrl: '/pic',
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        maxFileSize: 10240,
+        maxFilesNum: 10,
+        //allowedFileTypes: ['image', 'video', 'flash'],
+        uploadExtraData: function () {
+            var obj = {};
+            var val = $('#desc').val();
+            obj['desc'] = val;
+            return obj;
+        }
+    });
+
+    $("#file-1").fileinput({
+        uploadUrl: '#', // you must set a valid URL here else you will get an error
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        overwriteInitial: false,
+        maxFileSize: 10240,
+        maxFilesNum: 10,
+        //allowedFileTypes: ['image', 'video', 'flash'],
+        slugCallback: function (filename) {
+            return filename.replace('(', '_').replace(']', '_');
+        }
+    });
+    /*
+    $(".file").on('fileselect', function(event, n, l) {
+        alert('File Selected. Name: ' + l + ', Num: ' + n);
+    });
+    */
+    $("#file-3").fileinput({
+        showUpload: false,
+        showCaption: false,
+        browseClass: "btn btn-primary btn-lg",
+        fileType: "any",
+        previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"
+    });
+    $("#file-4").fileinput({
+        uploadExtraData: {kvId: '10'}
+    });
+    $(".btn-warning").on('click', function () {
+        if ($('#file-4').attr('disabled')) {
+            $('#file-4').fileinput('enable');
+        } else {
+            $('#file-4').fileinput('disable');
+        }
+    });
+    $(".btn-info").on('click', function () {
+        $('#file-4').fileinput('refresh', {previewClass: 'bg-info'});
+    });
+    /*
+    $('#file-4').on('fileselectnone', function() {
+        alert('Huh! You selected no files.');
+    });
+    $('#file-4').on('filebrowse', function() {
+        alert('File browse clicked for #file-4');
+    });
+    */
+    $(document).ready(function () {
+        $("#test-upload").fileinput({
+            'showPreview': false,
+            'allowedFileExtensions': ['jpg', 'png', 'gif'],
+            'elErrorContainer': '#errorBlock'
+        });
+        /*
+        $("#test-upload").on('fileloaded', function(event, file, previewId, index) {
+            alert('i = ' + index + ', id = ' + previewId + ', file = ' + file.name);
+        });
+        */
+    });
+</script>
+</html>

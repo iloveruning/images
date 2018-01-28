@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>uploadimg.html</title>
+
+
+    <meta name="content-type" content="text/html; charset=UTF-8"/>
+
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+</head>
+<body>
+<br/>
+<br/>
+<form enctype="multipart/form-data" method="post" action="/pic">
+    图片&nbsp;&nbsp;<input type="file" name="file"/>
+    <input type="submit" value="上传"/>
+</form>
+
+<br/>
+<br/>
+<form enctype="multipart/form-data"  method="post" action="/file/video">
+    视频&nbsp;&nbsp;<input type="file" name="file"/>
+    <input type="submit" value="上传"/>
+</form>
+<br/>
+<br/>
+<form enctype="multipart/form-data" method="post" action="/file/word">
+    word&nbsp;&nbsp;<input type="file" name="file"/>
+    <input type="submit" value="上传"/>
+</form>
+
+
+<br/>
+<br/>
+<form enctype="multipart/form-data" method="post" action="/file/office">
+    office文件&nbsp;&nbsp;<input type="file" name="file"/><br/>
+    <input type="text" name="desc"/><br/>
+    <input type="submit" value="上传"/>
+</form>
+</body>
+</html>

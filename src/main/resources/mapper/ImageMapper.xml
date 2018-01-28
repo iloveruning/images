@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cll.images.mapper.ImageMapper">
+
+    <insert id="save" parameterType="com.cll.images.entity.Image">
+        INSERT INTO image(name,
+        <if test="description != null and description != ''">
+            description,
+        </if> type,hash, key_)VALUES (#{name},
+        <if test="description != null and description != ''">
+            #{description},
+        </if>#{type},#{hash},#{key_})
+    </insert>
+
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM image WHERE id=#{id}
+    </delete>
+
+    <select id="findAll" resultType="com.cll.images.entity.Image">
+        SELECT id,name,description,type,create_time createTime,key_ key_
+        FROM image
+    </select>
+
+    <select id="findKeyById" parameterType="int" resultType="string">
+        SELECT key_ FROM image WHERE id=#{id}
+    </select>
+
+</mapper>
