@@ -1,1 +1,1 @@
-**update images to qiniu server**
+##upload images to qiniu server**
